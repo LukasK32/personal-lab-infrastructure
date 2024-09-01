@@ -1,4 +1,16 @@
 ---
+- name: "Enable colored prompt"
+  become: true
+  loop:
+    - /home/service/.bashrc
+    - /root/.bashrc
+    - /etc/skel/.bashrc
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    line: "force_color_prompt=yes"
+    regexp: '#?force_color_prompt=yes'
+    state: present
+
 - name: "Install Generic Colouriser"
   become: true
   ansible.builtin.apt:

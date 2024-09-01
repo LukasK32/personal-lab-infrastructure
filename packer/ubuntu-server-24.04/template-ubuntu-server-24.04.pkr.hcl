@@ -136,4 +136,11 @@ build {
       "sudo rm /etc/ssh/ssh_host_*key*",
     ]
   }
+
+  // Ensure that Machine ID is generated on next boot
+  provisioner "shell" {
+    inline = [
+      "sudo truncate -s 0 /etc/machine-id /var/lib/dbus/machine-id",
+    ]
+  }
 }

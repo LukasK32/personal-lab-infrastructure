@@ -1,0 +1,6 @@
+---
+- name: "Install NET-3 networking toolkit"
+  become: true
+  ansible.builtin.apt:
+    package: "net-tools"
+    state: "present"

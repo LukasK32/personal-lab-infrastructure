@@ -1,8 +1,13 @@
 packer {
   required_plugins {
     proxmox = {
-      version = ">= 1.1.8"
+      version = "~> 1.1.8"
       source  = "github.com/hashicorp/proxmox"
+    }
+
+    ansible = {
+      version = "~> 1.1.1"
+      source = "github.com/hashicorp/ansible"
     }
   }
 }
@@ -101,4 +106,17 @@ source "proxmox-iso" "ubuntu-server" {
 build {
   name    = "template-ubuntu-server-24.04"
   sources = ["source.proxmox-iso.ubuntu-server"]
+
+  # Ensure cloud-init finished
+  provisioner "shell" {
+    inline = [
+      "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 2; done",
+    ]
+  }
+
+  # Configure with base playbook
+  provisioner "ansible" {
+    playbook_file = "../../playbook-common.yml"
+    use_proxy = false
+  }
 }

@@ -1,0 +1,5 @@
+---
+- name: "Common playbook for all Ubuntu Server 24.04 instances"
+  hosts: all
+  roles:
+    - common

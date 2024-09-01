@@ -80,8 +80,8 @@ source "proxmox-iso" "ubuntu-server" {
 
   # Auto-install via Cloud Init
   http_content = {
-    "/meta-data" = templatefile("${path.root}/cloud-init/meta-data.pkrtpl.hcl", {})
-    "/user-data" = templatefile("${path.root}/cloud-init/user-data.pkrtpl.hcl", {
+    "/meta-data" = templatefile("${path.root}/files/meta-data.pkrtpl.hcl", {})
+    "/user-data" = templatefile("${path.root}/files/user-data.pkrtpl.hcl", {
       ssh_authorized_key = "${var.ssh_authorized_key}"
     })
   }
@@ -118,5 +118,22 @@ build {
   provisioner "ansible" {
     playbook_file = "../../playbook-common.yml"
     use_proxy = false
+  }
+
+  // Ensure that SSH Host Keys are geerated on next boot
+  provisioner "file" {
+    content = templatefile("${path.root}/files/ssh_host_keys.service.pkrtpl.hcl", {})
+    destination = "/home/service/reset_ssh_host_keys.service"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo mv /home/service/reset_ssh_host_keys.service /etc/systemd/system/reset_ssh_host_keys.service",
+      "sudo chown root:root /etc/systemd/system/reset_ssh_host_keys.service",
+      "sudo chmod 755 /etc/systemd/system/reset_ssh_host_keys.service",
+      "sudo systemctl daemon-reload",
+      "sudo systemctl enable reset_ssh_host_keys",
+      "sudo rm /etc/ssh/ssh_host_*key*",
+    ]
   }
 }

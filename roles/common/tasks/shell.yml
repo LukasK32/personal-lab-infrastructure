@@ -11,6 +11,13 @@
     regexp: '#?force_color_prompt=yes'
     state: present
 
+- name: "Set prompt color to red for root"
+  become: true
+  ansible.builtin.replace:
+    path: "/root/.bashrc"
+    regexp: '^(.*PS1=.*)32m(.*)$'
+    replace: '\g<1>31m\g<2>'
+
 - name: "Install Generic Colouriser"
   become: true
   ansible.builtin.apt:

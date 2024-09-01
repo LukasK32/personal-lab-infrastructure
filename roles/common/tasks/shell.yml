@@ -1,0 +1,14 @@
+---
+- name: "Install Generic Colouriser"
+  become: true
+  ansible.builtin.apt:
+    package: "grc"
+    state: "present"
+
+- name: "Enable Generic Colouriser"
+  become: true
+  ansible.builtin.lineinfile:
+    dest: "/etc/default/grc"
+    line: "GRC_ALIASES=true"
+    regexp: 'GRC_ALIASES=false'
+    state: present

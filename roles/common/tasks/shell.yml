@@ -29,6 +29,12 @@
     regexp: '^(.*PS1=.*)\\h(.*)$'
     replace: '\1\\H\2'
 
+- name: "Install Bash Completion"
+  become: true
+  ansible.builtin.apt:
+    package: "bash-completion"
+    state: "present"
+
 - name: "Install Generic Colouriser"
   become: true
   ansible.builtin.apt:

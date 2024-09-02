@@ -6,3 +6,4 @@
     - bash
     - common
     - firewall
+    - unattended-upgrades

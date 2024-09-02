@@ -1,0 +1,36 @@
+---
+- name: "Install Unattended Upgrades"
+  become: true
+  ansible.builtin.apt:
+    package:
+      - "unattended-upgrades"
+      - "update-notifier-common"
+    state: "present"
+
+- name: "Enable Unattended Upgrades"
+  become: true
+  ansible.builtin.copy:
+    src: "files/etc/apt/apt.conf.d/20auto-upgrades"
+    dest: "/etc/apt/apt.conf.d/20auto-upgrades"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: "Configure Unattended Upgrades"
+  become: true
+  ansible.builtin.copy:
+    src: "files/etc/apt/apt.conf.d/50unattended-upgrades"
+    dest: "/etc/apt/apt.conf.d/50unattended-upgrades"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: "Configure Unattended Upgrades timer"
+  become: true
+  ansible.builtin.copy:
+    src: "files/etc/systemd/system/apt-daily-upgrade.timer"
+    dest: "/etc/systemd/system/apt-daily-upgrade.timer"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Reload Unattended Upgrades timer"

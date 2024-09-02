@@ -1,33 +1,24 @@
 ---
-- name: "Enable colored prompt"
+- name: "Configure prompt for normal users"
   become: true
   loop:
     - /home/service/.bashrc
-    - /root/.bashrc
     - /etc/skel/.bashrc
   ansible.builtin.lineinfile:
     path: "{{ item }}"
-    line: "force_color_prompt=yes"
-    regexp: '#?force_color_prompt=yes'
     state: present
+    regexp: "^PS1="
+    line: |
+      PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\H\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
-- name: "Set prompt color to red for root"
+- name: "Configure prompt for root user"
   become: true
-  ansible.builtin.replace:
+  ansible.builtin.lineinfile:
     path: "/root/.bashrc"
-    regexp: '^(.*PS1=.*)32m(.*)$'
-    replace: '\g<1>31m\g<2>'
-
-- name: "Use FQDN in prompt"
-  become: true
-  loop:
-    - /home/service/.bashrc
-    - /root/.bashrc
-    - /etc/skel/.bashrc
-  ansible.builtin.replace:
-    path: "{{ item }}"
-    regexp: '^(.*PS1=.*)\\h(.*)$'
-    replace: '\1\\H\2'
+    state: present
+    regexp: "^PS1="
+    line: |
+      PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\H\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
 - name: "Install Bash Completion"
   become: true

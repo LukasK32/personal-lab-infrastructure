@@ -1,4 +1,3 @@
 ---
-- ansible.builtin.import_tasks: shell.yml
 - ansible.builtin.import_tasks: utils.yml
 - ansible.builtin.import_tasks: banners.yml

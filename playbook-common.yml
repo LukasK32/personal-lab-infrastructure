@@ -5,3 +5,4 @@
     - ssh-server
     - bash
     - common
+    - firewall

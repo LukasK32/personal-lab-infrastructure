@@ -1,0 +1,26 @@
+---
+- name: "Disable IPv6 rules in UFW"
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/default/ufw"
+    state: present
+    regexp: "^IPV6="
+    line: IPV6=no
+  notify: "Reload UFW"
+
+- name: "Configure UFW to deny incoming trafic by default"
+  become: true
+  community.general.ufw:
+    direction: "incoming"
+    default: "deny"
+
+- name: "Configure UFW to allow outgoing trafic by default"
+  become: true
+  community.general.ufw:
+    direction: "outgoing"
+    default: "allow"
+
+- name: "Enable UFW"
+  become: true
+  community.general.ufw:
+    state: enabled

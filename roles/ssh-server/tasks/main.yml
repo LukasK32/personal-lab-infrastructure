@@ -14,3 +14,9 @@
   ansible.builtin.service:
     name: "ssh"
     enabled: true
+
+- name: "Configure UFW to allow connections to OpenSSH Server"
+  become: true
+  community.general.ufw:
+    rule: "allow"
+    name: "OpenSSH"

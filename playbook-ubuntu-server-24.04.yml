@@ -1,0 +1,8 @@
+---
+- name: "Playbook for Ubuntu Server 24.04 Template"
+  hosts: template
+  roles:
+    - ssh-server
+    - bash
+    - common
+    - firewall

@@ -49,7 +49,7 @@ source "proxmox-iso" "ubuntu-server" {
   token       = "${var.proxmox_api_token_secret}"
 
   # VM Options
-  template_name = "template-ubuntu-server-24.04"
+  template_name = "ubuntu-server-24.04"
   qemu_agent    = true
   cloud_init    = false
 
@@ -104,7 +104,7 @@ source "proxmox-iso" "ubuntu-server" {
 }
 
 build {
-  name    = "template-ubuntu-server-24.04"
+  name    = "ubuntu-server-24.04"
   sources = ["source.proxmox-iso.ubuntu-server"]
 
   # Ensure cloud-init finished
@@ -116,8 +116,11 @@ build {
 
   # Configure with base playbook
   provisioner "ansible" {
-    playbook_file = "../../playbook-common.yml"
+    playbook_file = "../../playbook-ubuntu-server-24.04.yml"
     use_proxy = false
+    groups = [
+      "template",
+    ]
   }
 
   // Ensure that SSH Host Keys are geerated on next boot

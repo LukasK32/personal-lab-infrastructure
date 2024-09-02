@@ -1,0 +1,6 @@
+---
+- name: "Playbook for the Proxmox host"
+  hosts: proxmox
+  roles:
+    - ssh-server
+    - bash

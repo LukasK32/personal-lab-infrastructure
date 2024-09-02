@@ -4,7 +4,7 @@
   roles:
     - ssh-server
     - bash
-    - common
-    - firewall
     - unattended-upgrades
     - banners
+    - utils
+    - firewall

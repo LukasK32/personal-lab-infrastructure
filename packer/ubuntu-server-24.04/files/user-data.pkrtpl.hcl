@@ -57,6 +57,7 @@ autoinstall:
   packages:
     - "qemu-guest-agent"
   user-data:
+    hostname: "template"
     users:
       - name: "service"
         groups: ["adm", "sudo"]

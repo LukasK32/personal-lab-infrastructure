@@ -58,6 +58,15 @@ autoinstall:
     - "qemu-guest-agent"
   user-data:
     hostname: "template"
+    write_files:
+      - path: "/etc/hosts"
+        content: |
+          127.0.0.1 localhost
+          127.0.1.1 template template.local
+
+          ::1     localhost ip6-localhost ip6-loopback
+          ff02::1 ip6-allnodes
+          ff02::2 ip6-allrouters
     users:
       - name: "service"
         groups: ["adm", "sudo"]
